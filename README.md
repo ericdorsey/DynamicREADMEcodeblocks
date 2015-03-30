@@ -33,7 +33,7 @@ If you don't have it already: `$ pip install jinja2`
 
 * In the `templates/master_README.md` put a reference to each script you want to become a code block on a line by itself, surrounded by `{{ }}`, so for example, for `scripts/Auto.sh` enter a line that says `{{Auto}}` into `templates/master_README.md`. 
 
-  * *Do not* include the file extension, or put spaces around the file name (ie, `{{this}}`, not `{{ this }}` or `{{this.sh}}`). Also, file names in `scripts/` cannot have `-`'s (dashes) in them -- not the filename itself in `scripts/` nor the `{{ }}` tag in `templates/master_README.md`. `jinja2` breaks on dashes in the file names.
+  * *Do not* include the file extension, or put spaces around the file name (ie, `{{this}}`, not `{{ this }}` or `{{this.sh}}`). Also, file names in `scripts/` cannot have `-`'s (dashes) in them -- not the filename itself in `scripts/` nor the `{{ }}` tag in `templates/master_README.md`. `jinja2` [interprets dashes as Math](http://jinja.pocoo.org/docs/dev/templates/#math), specifically subtraction. (I need to research escaping in jinja to see if dashes can be accomodated)
   * Ensure that there is a one for one match of each file in `scripts/`, and for `{{}}` tags inside `master_README.md`. In other words, for every file in `scripts/` there should also be  `{{filename}}` tag inside `master_README.md`.
 
 *  Run `dynreadme.py`
