@@ -1,9 +1,9 @@
-This is my template README
+This is the `master_README.md` file. 
 
-Below is the code block for Timed Process Killer, which will get filled in when `dynreadme.py` is run:
+The below entry will get populated with the contents of `scripts/timed_process_killer.sh`: 
+ 
+{{ timed_process_killer }}
 
-{{timed_process_killer}}
+Similarly, the entry below this line will get dynamically populated with the contents of `scripts/Auto.sh`:
 
-And below this is the code block for Auto updates. Same with this:
-
-{{Auto}}
+{{ Auto }}

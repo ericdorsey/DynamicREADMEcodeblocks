@@ -1,8 +1,7 @@
-This is my generated README
+This is the `master_README.md` file. 
 
-Below is the code block for Timed process killer:
-
-
+The below entry will get populated with the contents of `scripts/timed_process_killer.sh`: 
+ 
 ```
 #!/bin/bash
 
@@ -15,8 +14,7 @@ for i in ${PIDS}; do { echo "Killing $i"; kill -9 $i; }; done;
 ```
 
 
-And below this is the code block for Auto updates:
-
+Similarly, the entry below this line will get dynamically populated with the contents of `scripts/Auto.sh`:
 
 ```
 #!/bin/bash

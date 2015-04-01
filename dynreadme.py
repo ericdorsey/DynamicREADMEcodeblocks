@@ -1,44 +1,59 @@
 from __future__ import print_function # force use print()
 from jinja2 import Environment, FileSystemLoader
 import os
+import sys
+import re
 
-# TODO verify {{ foo }} in template before proceeding
-# TODO dash in filenames breaks Jinja with Undef = undef err
-
-#os.chdir("template/")
 env = Environment(loader=FileSystemLoader('templates'))
-#print(os.getcwd())
 template = env.get_template('master_README.md')
-#print(template)
 
 
-# list all the files in /scripts
-def generate_dynamic_readme():
-    filenames = []
+def check_master_template():
+    """
+    Gets everything in master_README.md that is between double braces.
+    In other words, gets all the template variables.
+    :return: List
+    """
+    def strip_it(my_value):
+        new_value = my_value.replace("{{", "").replace("}}", "").strip()
+        return new_value
+    os.chdir("templates/")
+    with open("master_README.md", "r") as my_file:
+        data = my_file.read()
+        match_found = re.findall(r'{{ .* }}', data)
+    fancy_new = [strip_it(i) for i in match_found]
+    print("Template variables found in templates/master_README.md:")
+    for i in fancy_new:
+        print(i)
+    os.chdir("..")
+    return fancy_new
+
+
+def generate_dynamic_readme(template_vars_found):
     template_values = {}
-    #print(os.getcwd())
     os.chdir("scripts/")
-    #print(os.getcwd())
+    print()
     for filename in os.listdir('.'):
-        #print(filename)
+        if "-" in filename:
+            print("ERROR:")
+            print("{0} contains a '-' character".format(filename))
+            print("Please remove, or replace, all dashes from files in scripts/ and rerun.")
+            sys.exit(1)
+        print("Adding contents of scripts/{0} to output/new.md".format(filename))
         template_name = filename.split(".")[0]
-        data = "\n```\n"
+        if template_name not in template_vars_found:
+            print("ERROR:")
+            print("{0} not found, or improperly formatted, in templates/master_README.md".format(template_name))
+            print("Please add, or correct, template value for scripts/{0} and rerun.".format(template_name))
+            sys.exit(1)
+        data = "```\n"
         with open (filename, "r") as myfile:
             data += myfile.read()
-        data += "```\n"
+        data += "\n```\n"
         template_values[template_name] = data
-        filenames.append(filename)
-        #print(data) # file contents
-    #print(template_values)
     output_from_parsed_template = template.render(template_values)
     with open("../output/new.md", "wb") as outfile:
         outfile.write(output_from_parsed_template)
-    for i in filenames:
-        print("Generating codeblock for {0}".format(i))
-    return filenames
 
-generate_dynamic_readme()
-#print(filenames)
-
-
-
+template_vars_found = check_master_template()
+generate_dynamic_readme(template_vars_found)
