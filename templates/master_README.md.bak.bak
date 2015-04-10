@@ -14,5 +14,4 @@ And..
 
 {{ context()['test.echo'] }}
 
-{{ context()['script-with-dashes'] }}
 

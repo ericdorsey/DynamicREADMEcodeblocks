@@ -1,3 +1,5 @@
+
+
 This is the `master_README.md` file. 
 
 The below entry will get populated with the contents of `scripts/timed_process_killer.sh`: 
@@ -29,3 +31,21 @@ apt-get update
 apt-get upgrade -y
 apt-get autoclean
 ```
+
+
+And..
+
+```
+#!/bin/bash
+echo "This script isn't terribly useful."
+
+```
+
+
+```
+#!/usr/bin/env python
+from __future__ import print_function
+print("I'm a script with dashes in my name")
+
+```
+
