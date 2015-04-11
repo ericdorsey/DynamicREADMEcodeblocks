@@ -69,10 +69,11 @@ In the `templates/master_README.md` put a reference to each file in `scripts/` w
 
 For example, for `scripts/Auto.sh` enter a line that says `{{ Auto }}` into `templates/master_README.md`. 
 
-  * *Do not* include the file extension in `master_README.md` variables:
-    * `{{ file_name }}` not `{{ file_name.sh }}`
+  * **Do not** include the file extension in `master_README.md` variables:
+    * Good: `{{ file_name }}`
+    * Bad: `{{ file_name.sh }}`
   * Variables can include dashes (`-`) and dots/periods (`.`)
-    * `{{ file-name }}` is okay. So is `{{ file.name.sh }}`.
+    * `{{ file-name }}` is okay. So is `{{ file.name }}`.
   
 For every file in `scripts/`, there should also be a `{{ filename }}` variable inside `templates/master_README.md`. **Ensure there is a one for one match.** 
 
