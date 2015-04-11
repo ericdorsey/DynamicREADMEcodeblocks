@@ -12,9 +12,9 @@ Similarly, the entry below this line will get dynamically populated with the con
 
 Files with dots (`.`) in their names work, below is `scripts/test.echo.sh`:
 
-{{ test.echo }}
+{{ context()['test.echo'] }}
 
 This is static content, but below is a file with dashes in it's name from `scripts/script-with-dashes.py`:
 
-{{ script-with-dashes }}
+{{ context()['script-with-dashes'] }}
 
