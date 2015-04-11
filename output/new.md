@@ -1,8 +1,8 @@
 
 
-This is the `master_README.md` file. 
+This is the `master_README.md` file. This is where you mix your static content with placeholder template variables 
 
-The below entry will get populated with the contents of `scripts/timed_process_killer.sh`: 
+The below template variable **timed_process_killer** will get populated with the contents of `scripts/timed_process_killer.sh`: 
  
 ```
 #!/bin/bash
@@ -24,23 +24,24 @@ Similarly, the entry below this line will get dynamically populated with the con
 # /var/log/apt/term.log
 # /var/log/dpkg.log
 myDate=$(date +"%Y-%m-%d | %r")
-updateString="'apt-get updatey', 'apt-get upgrade -y', apt-get 'autoclean' ran | $myDate"
-echo $updateString >> /home/eha/Code/AutoUpdates/log/AutoUpdate.log 
-#echo $updateString
-apt-get update 
-apt-get upgrade -y
-apt-get autoclean
+updateString="'apt-get update', 'apt-get upgrade -y', 'apt-get autoclean' ran | $myDate"
+echo $updateString >> ~/Code/AutoUpdates/log/AutoUpdate.log 
+apt-get update && apt-get upgrade -y && apt-get autoclean
+
 ```
 
 
-And..
+Files with dots (`.`) in their names work, below is `scripts/test.echo.sh`:
 
 ```
 #!/bin/bash
 echo "This script isn't terribly useful."
+echo "It demonstrates a file with dots ('.') in it's name"
 
 ```
 
+
+This is static content, but below is a file with dashes in it's name from `scripts/script-with-dashes.py`:
 
 ```
 #!/usr/bin/env python
