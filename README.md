@@ -135,7 +135,9 @@ ___
 
 OS | Python version(s) 
 --- | ---  
-OSX 10.10.2 | 2.7.9 and 3.4.3  
+OSX 10.10.2 | 2.7.9 and 3.4.3
+Windows 7 | 2.7.2 and 3.4.3
+Elementary OS (Ubuntu) | 2.7.6 and 3.4.0
 
 ___
 
