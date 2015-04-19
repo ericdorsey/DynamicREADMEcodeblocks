@@ -119,7 +119,8 @@ def generate_dynamic_readme(template_vars_found, exclude_files):
     template.globals['context'] = get_context
     output_from_parsed_template = template.render(template_values)
     with open("output/new.md", "wb") as outfile:
-        outfile.write(output_from_parsed_template)
+        # encode utf-8 for Python3
+        outfile.write(output_from_parsed_template.encode('utf-8'))
     print("")
 
 
@@ -162,7 +163,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Dynamic README")
     parser.add_argument("-s", "--suggest",
                         help="suggest variable names for use in "
-                             "master_README.md based on files in scripts/",
+                             "master_README.md based on files in 'scripts/'",
                         action="store_true", required=False)
     args = parser.parse_args()
 
