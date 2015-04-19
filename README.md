@@ -1,4 +1,4 @@
-### Dynamic README codeblock generator
+# Dynamic README codeblock generator
 
 Inserts complete contents of files as as dynamically generated subsections, or parts (`Markdown code blocks`), of a newly generated Markdown file (`output/new.md`).
 
@@ -26,8 +26,8 @@ ___
 
 ## Dependencies
 
-* Python 2.7.x ish (*Python3 compatibility is next*)
-* [jinja2 templating library](http://jinja.pocoo.org/docs/dev/) -- if you don't have it already: `$ pip install jinja2`
+* Python 2.7.x or 3.4.x
+* [jinja2 templating library](http://jinja.pocoo.org/docs/dev/) (install via: `$ pip install jinja2`)
 
 ## Structure of this repo
 
@@ -72,8 +72,9 @@ For example, for `scripts/Auto.sh` enter a line that says `{{ Auto }}` into `tem
   * **Do not** include the file extension in `master_README.md` variables:
     * Good: `{{ file_name }}`
     * Bad: `{{ file_name.sh }}`
-  * Variables can include dashes (`-`) and dots/periods (`.`)
-    * `{{ file-name }}` is okay. So is `{{ file.name }}`.
+  * Variables can include dashes (`-`) and dots / periods (`.`)
+    * Good: `{{ file-name }}` 
+    * Good: `{{ file.name }}`
   
 For every file in `scripts/`, there should also be a `{{ filename }}` variable inside `templates/master_README.md`. **Ensure there is a one for one match.** 
 
@@ -132,6 +133,10 @@ ___
 
 #### Tested
 
-OS | Python version  
+OS | Python version(s) 
 --- | ---  
-OSX 10.10.2 | 2.7.6  
+OSX 10.10.2 | 2.7.9 and 3.4.3  
+
+___
+
+[![https://www.python.org/](https://www.python.org/static/community_logos/python-powered-w-100x40.png)](https://www.python.org/)
