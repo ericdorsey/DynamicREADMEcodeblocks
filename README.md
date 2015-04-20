@@ -46,7 +46,7 @@ ___
 │   └── timed_process_killer.sh
 └── templates
     ├── master_README.md
-    └── master_README_temp.md
+    └── temporary_template.md
 ```
 
 * `README.md`: 
@@ -54,13 +54,13 @@ ___
 * `dynreadme.py`: 
   * When run, creates `output/new.md`, combining static content from `templates/master_README.md` as well as the file contents of each file in `scripts/`
 * `output/new.md`: 
-  * The new, dynamically created Markdown file. You can delete it because it gets created on every run of `dynreadme.py`.
+  * The new, dynamically created Markdown file. Gets created / overwritten on every run of `dynreadme.py`.
 * All the example files in `scripts/`: `Auto.sh`, `timed_process_killer.sh`, `test.echo.sh`, `script-with-dashes.py`: 
-  * The contents of each of these files end up as `code blocks` within the new `output/new.md` file. You would replace these with your own files. 
+  * The contents of each of these files end up as `code blocks` within the new `output/new.md` file. Replace these with your own files. 
 * `templates/master_README.md`: 
   * This is the **master template**. This is where you add all your static content, and add your `{{ variables }}` which represent each file in `scripts/` (sections of your README you want to be replaced with full file contents from each file in `scripts/`). Each `{{ variable }}` gets dynamically populated with the contents of one of the files from `scripts/`. 
-* `templates/master_README_temp.md`: 
-  * This is a utility template created by `dynreadme.py` to accomodate the per-iteration adding of special prefixes needed for files with a `.` or `-` in their name. **You don't need to enter anything in this file.** You can delete it because it gets created on every run of `dynreadme.py`.
+* `templates/temporary_template.md`: 
+  * This is a utility template (temporary holding spot) created by `dynreadme.py` to accomodate the per-iteration adding of special prefixes needed for files with a `.` or `-` in their name.  Gets created / overwritten on every run of `dynreadme.py`. No configuration needed in this file.
 
 
 ## Usage

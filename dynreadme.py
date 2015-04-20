@@ -12,6 +12,7 @@ env = Environment(loader=FileSystemLoader('templates'))
 # Files to exclude
 exclude_files = [".DS_Store"]
 
+
 def copy_master():
     """
     Creates a temp copy of templates/master_README.md for handling output
@@ -19,16 +20,17 @@ def copy_master():
 
     :return: None
     """
-    shutil.copyfile("master_README.md", "master_README_temp.md")
+    shutil.copyfile("master_README.md", "temporary_template.md")
+
 
 def create_master_temp():
     """
-    Creates the templates/master_README_temp.md file
+    Creates the templates/temporary_template.md file
 
     :return:
     """
     os.chdir("templates/")
-    with open("master_README_temp.md", "w") as new_file:
+    with open("temporary_template.md", "w") as new_file:
         pass
     os.chdir("..")
 
@@ -81,21 +83,21 @@ def generate_dynamic_readme(template_vars_found, exclude_files):
             template_name = os.path.splitext(filename)[0]  # Strip off extension
             for char in special_case_characters:
                 # For special character files.
-                # We need to modify the master_README_temp.md {{ vars }}
+                # We need to modify the temporary_template.md {{ vars }}
                 # Example: {{ context()['vars'] }}
                 if char in template_name:
                     number_of_special_case_characters += 1
                     os.chdir("../templates/")
                     # If this is our first special character file,
                     # copy the master onto the temp master template
-                    if os.stat("master_README_temp.md").st_size == 0:
+                    if os.stat("temporary_template.md").st_size == 0:
                         copy_master()
-                    with open("master_README_temp.md", "r+") as current_file:
+                    with open("temporary_template.md", "r+") as current_file:
                         data = current_file.read()
                     re_match_string = "{left} {template_name} {right}".format(left=left, template_name=template_name, right=right)
                     replacement_var_name = "{left} context()['{template_name}'] {right}".format(left=left, template_name=template_name, right=right)
                     data = re.sub(re_match_string, replacement_var_name, data)
-                    with open("master_README_temp.md", "w") as new_file:
+                    with open("temporary_template.md", "w") as new_file:
                         new_file.write(data)
                     os.chdir("../scripts/")
             # Load contents if each of the files in /scripts
@@ -115,7 +117,7 @@ def generate_dynamic_readme(template_vars_found, exclude_files):
 
     # Create the output/new.md file
     os.chdir("..")
-    template = env.get_template('master_README_temp.md')
+    template = env.get_template('temporary_template.md')
     template.globals['context'] = get_context
     output_from_parsed_template = template.render(template_values)
     with open("output/new.md", "wb") as outfile:
