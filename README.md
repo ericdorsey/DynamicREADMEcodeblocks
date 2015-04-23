@@ -119,6 +119,8 @@ Adding contents of scripts/timed_process_killer.sh to output/new.md
 
 The newly generated file (combination of static content from `templates/master_README.md` and the dynamic file contents of each file in `scripts/` is created in `output/new.md`.
 
+If `dynreadme` has been run previously, and there is already a `new.md` in `output/`, a backup of the previous `output/new.md` is created called `new_previous.md` (if you need to retain more than one previous version you will need to save it out manually).
+
 #### Help
 
 ```

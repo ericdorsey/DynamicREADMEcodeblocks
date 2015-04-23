@@ -120,6 +120,11 @@ def generate_dynamic_readme(template_vars_found, exclude_files):
     template = env.get_template('temporary_template.md')
     template.globals['context'] = get_context
     output_from_parsed_template = template.render(template_values)
+
+    # Make a backup of previous output file before proceeding
+    if os.path.exists("output/new.md"):
+        shutil.copy2("output/new.md", "output/new_previous.md")
+
     with open("output/new.md", "wb") as outfile:
         # encode utf-8 for Python3
         outfile.write(output_from_parsed_template.encode('utf-8'))
@@ -153,6 +158,7 @@ def main(suggest=False):
     :param suggest: boolean
     :return: None
     """
+
     if suggest is True:
         suggest_master_vars(exclude_files)
     else:
