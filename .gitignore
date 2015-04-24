@@ -1,2 +1,3 @@
 # Exclude temp testing files
 temp_store/
+output/new_previous.md
