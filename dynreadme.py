@@ -5,12 +5,19 @@ import os
 import re
 import argparse
 import shutil
+import sys
 
 # jinja2 templates are located in /templates
 env = Environment(loader=FileSystemLoader('templates'))
 
 # Files to exclude
 exclude_files = [".DS_Store"]
+
+# Override builtin raw_input for Python 3
+try:
+    input = raw_input
+except NameError:
+    pass
 
 
 def copy_master():
@@ -66,6 +73,7 @@ def retrieve_master_template_vars(exclude_files):
     for i in sorted(template_variables_found):
         print(i)
     os.chdir("..")
+
     return template_variables_found
 
 
@@ -151,6 +159,19 @@ def suggest_master_vars(exclude_files):
     os.chdir("..")
 
 
+def compare_num_template_vars_to_scripts(template_vars_found, exclude_files):
+    number_of_template_vars = len(template_vars_found)
+    number_of_scripts = 0
+    for filename in os.listdir("scripts/"):
+        if filename not in exclude_files:
+            number_of_scripts += 1
+    if number_of_template_vars != number_of_scripts:
+        choice = input("\nWarning! Number of template variables in templates/master_README.md not equal to "
+                       "the number of files in scripts/ folder. \nProceed? (y/n): ")
+        if choice.lower().startswith("n"):
+            sys.exit("\nExiting..\n")
+
+
 def main(suggest=False):
     """
     Main program body.
@@ -164,6 +185,7 @@ def main(suggest=False):
     else:
         create_master_temp()
         template_vars_found = retrieve_master_template_vars(exclude_files)
+        compare_num_template_vars_to_scripts(template_vars_found, exclude_files)
         generate_dynamic_readme(template_vars_found, exclude_files)
 
 
