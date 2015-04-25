@@ -27,7 +27,7 @@ def copy_master():
 
     :return: None
     """
-    shutil.copyfile("master_README.md", "temporary_template.md")
+    shutil.copyfile("templates/master_README.md", "templates/temporary_template.md")
 
 
 def create_master_temp():
@@ -36,10 +36,8 @@ def create_master_temp():
 
     :return:
     """
-    os.chdir("templates/")
-    with open("temporary_template.md", "w") as new_file:
+    with open("templates/temporary_template.md", "w") as new_file:
         pass
-    os.chdir("..")
 
 
 @contextfunction
@@ -64,28 +62,24 @@ def retrieve_master_template_vars(exclude_files):
     def strip_it(my_value):
         new_value = my_value.replace("{{", "").replace("}}", "").strip()
         return new_value
-    os.chdir("templates/")
-    with open("master_README.md", "r") as my_file:
+    with open("templates/master_README.md", "r") as my_file:
         data = my_file.read()
         match_found = re.findall(r'{{ .* }}', data)
     template_variables_found = [strip_it(i) for i in match_found]
     print("\nTemplate variables found in templates/master_README.md:\n")
     for i in sorted(template_variables_found):
         print(i)
-    os.chdir("..")
-
     return template_variables_found
 
 
-def generate_dynamic_readme(template_vars_found, exclude_files):
+def generate_dynamic_readme(exclude_files):
     template_values = {}  # To store contents of each file in scripts/
     special_case_characters = ["-", "."]
-    os.chdir("scripts/")
     number_of_special_case_characters = 0
     left = "{{"
     right = "}}"
     print("")
-    for index, filename in enumerate(os.listdir('.')):
+    for index, filename in enumerate(os.listdir('scripts/')):
         if filename not in exclude_files:
             print("Adding contents of scripts/{0} to output/new.md".format(filename))
             template_name = os.path.splitext(filename)[0]  # Strip off extension
@@ -95,36 +89,30 @@ def generate_dynamic_readme(template_vars_found, exclude_files):
                 # Example: {{ context()['vars'] }}
                 if char in template_name:
                     number_of_special_case_characters += 1
-                    os.chdir("../templates/")
                     # If this is our first special character file,
                     # copy the master onto the temp master template
-                    if os.stat("temporary_template.md").st_size == 0:
+                    if os.stat("templates/temporary_template.md").st_size == 0:
                         copy_master()
-                    with open("temporary_template.md", "r+") as current_file:
+                    with open("templates/temporary_template.md", "r+") as current_file:
                         data = current_file.read()
                     re_match_string = "{left} {template_name} {right}".format(left=left, template_name=template_name, right=right)
                     replacement_var_name = "{left} context()['{template_name}'] {right}".format(left=left, template_name=template_name, right=right)
                     data = re.sub(re_match_string, replacement_var_name, data)
-                    with open("temporary_template.md", "w") as new_file:
+                    with open("templates/temporary_template.md", "w") as new_file:
                         new_file.write(data)
-                    os.chdir("../scripts/")
             # Load contents if each of the files in /scripts
             script_file_contents = "```\n"
-            with open(filename, "r") as my_file:
+            with open("scripts/{0}".format(filename), "r") as my_file:
                 script_file_contents += my_file.read()
             script_file_contents += "\n```\n"
             template_values[template_name] = script_file_contents
 
     # If there were no special characters, need to copy master to
-    # temp master to create new output.md file from
+    # temp master to create output/new.md file from
     if number_of_special_case_characters is 0:
-        print("there were no special characters")
-        print(">" * 10, "current dir is", os.getcwd())
-        os.chdir("../templates/")
         copy_master()
 
     # Create the output/new.md file
-    os.chdir("..")
     template = env.get_template('temporary_template.md')
     template.globals['context'] = get_context
     output_from_parsed_template = template.render(template_values)
@@ -146,10 +134,9 @@ def suggest_master_vars(exclude_files):
     :param exclude_files: list
     :return:
     """
-    os.chdir("scripts/")
     left = "{{"
     right = "}}"
-    for filename in os.listdir("."):
+    for filename in os.listdir("scripts/"):
         if filename not in exclude_files:
             print("Suggested master template variable for scripts/{0}:".format(filename))
             print("  {left} {file} {right}".format(
@@ -186,7 +173,7 @@ def main(suggest=False):
         create_master_temp()
         template_vars_found = retrieve_master_template_vars(exclude_files)
         compare_num_template_vars_to_scripts(template_vars_found, exclude_files)
-        generate_dynamic_readme(template_vars_found, exclude_files)
+        generate_dynamic_readme(exclude_files)
 
 
 if __name__ == "__main__":
